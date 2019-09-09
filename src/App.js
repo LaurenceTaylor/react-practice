@@ -1,26 +1,66 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import DateOfBirth from "./components/dateOfBirth";
+import Smoker from "./components/smoker";
+import Bmi from "./components/bmi";
+import Summary from "./components/summary";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    pages: [
+      { id: "dob-question", key: 1, display: true, dob: null, age: null },
+      { id: "smoker-question", key: 2, display: false },
+      { id: "bmi-question", key: 3, display: false },
+      { id: "summary", key: 4, display: false }
+    ]
+  };
+
+  handleDOBSubmit = (key, dob, age) => {
+    this.handleNextPage(key);
+    const pages = [...this.state.pages];
+    pages[0].dob = dob;
+    pages[0].age = age;
+    this.setState({ pages });
+    console.log(this.state);
+  };
+
+  handleNextPage = key => {
+    const pages = [...this.state.pages];
+    pages.map(page => {
+      if (page.key === key) {
+        page.display = false;
+      }
+      if (page.key === key + 1) {
+        page.display = true;
+      }
+    });
+    this.setState({ pages });
+  };
+
+  render() {
+    return (
+      <div>
+        {this.state.pages.map(page => {
+          if (page.key === 1 && page.display) {
+            return (
+              <DateOfBirth
+                key={page.key}
+                page={page}
+                onDOBSubmit={this.handleDOBSubmit}
+              />
+            );
+          } else if (page.key === 2 && page.display) {
+            return <Smoker key={page.key} />;
+          } else if (page.key === 3 && page.display) {
+            return <Bmi key={page.key} />;
+          } else if (page.key === 4 && page.display) {
+            return <Summary key={page.key} />;
+          }
+        })}
+      </div>
+    );
+  }
 }
 
 export default App;
