@@ -9,10 +9,10 @@ import Summary from "./components/summary";
 class App extends Component {
   state = {
     pages: [
-      { id: "dob-question", key: 1, display: true, dob: null, age: null },
-      { id: "smoker-question", key: 2, display: false },
-      { id: "bmi-question", key: 3, display: false },
-      { id: "summary", key: 4, display: false }
+      { key: 1, display: true, dob: null, age: null },
+      { key: 2, display: false, isSmoker: null },
+      { key: 3, display: false },
+      { key: 4, display: false }
     ]
   };
 
@@ -22,7 +22,13 @@ class App extends Component {
     pages[0].dob = dob;
     pages[0].age = age;
     this.setState({ pages });
-    console.log(this.state);
+  };
+
+  handleSmokerSubmit = (key, isSmoker) => {
+    this.handleNextPage(key);
+    const pages = [...this.state.pages];
+    pages[1].isSmoker = isSmoker;
+    this.setState({ pages });
   };
 
   handleNextPage = key => {
@@ -51,7 +57,13 @@ class App extends Component {
               />
             );
           } else if (page.key === 2 && page.display) {
-            return <Smoker key={page.key} />;
+            return (
+              <Smoker
+                key={page.key}
+                page={page}
+                onSmokerSubmit={this.handleSmokerSubmit}
+              />
+            );
           } else if (page.key === 3 && page.display) {
             return <Bmi key={page.key} />;
           } else if (page.key === 4 && page.display) {

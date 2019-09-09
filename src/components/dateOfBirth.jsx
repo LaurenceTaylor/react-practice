@@ -2,23 +2,24 @@ import React, { Component } from "react";
 
 class DateOfBirth extends Component {
   state = {
-    date: "",
-    age: null
+    response: { date: "", age: null }
   };
 
   handleChange = e => {
-    this.state.date = e.target.value;
+    const response = this.state.response;
+    response.date = e.target.value;
+    this.setState({ response });
   };
 
   handleSubmit = e => {
     e.preventDefault();
     const age = this.calculateAge();
-    this.props.onDOBSubmit(this.props.page.key, this.state.date, age);
+    this.props.onDOBSubmit(this.props.page.key, this.state.response.date, age);
   };
 
   calculateAge() {
     const today = new Date();
-    const dob = new Date(this.state.date);
+    const dob = new Date(this.state.response.date);
     let age = today.getFullYear() - dob.getFullYear();
     const month = today.getMonth() - dob.getMonth();
     if (month < 0 || (month === 0 && today.getDate() < dob.getDate())) {
@@ -31,7 +32,7 @@ class DateOfBirth extends Component {
     return (
       <React.Fragment>
         <h1>DOB Question</h1>
-        <form id="dateOfBirth">
+        <form>
           <input type="date" onChange={this.handleChange} />
           <input type="submit" value="Submit" onClick={this.handleSubmit} />
         </form>
