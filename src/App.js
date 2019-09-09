@@ -11,7 +11,7 @@ class App extends Component {
     pages: [
       { key: 1, display: true, dob: null, age: null },
       { key: 2, display: false, isSmoker: null },
-      { key: 3, display: false },
+      { key: 3, display: false, height: null, weight: null, bmi: null },
       { key: 4, display: false }
     ]
   };
@@ -28,6 +28,15 @@ class App extends Component {
     this.handleNextPage(key);
     const pages = [...this.state.pages];
     pages[1].isSmoker = isSmoker;
+    this.setState({ pages });
+  };
+
+  handleBMISubmit = (key, height, weight, bmi) => {
+    this.handleNextPage(key);
+    const pages = [...this.state.pages];
+    pages[2].height = height;
+    pages[2].weight = weight;
+    pages[2].bmi = bmi;
     this.setState({ pages });
   };
 
@@ -65,9 +74,25 @@ class App extends Component {
               />
             );
           } else if (page.key === 3 && page.display) {
-            return <Bmi key={page.key} />;
+            return (
+              <Bmi
+                key={page.key}
+                page={page}
+                onBMISubmit={this.handleBMISubmit}
+              />
+            );
           } else if (page.key === 4 && page.display) {
-            return <Summary key={page.key} />;
+            return (
+              <Summary
+                key={page.key}
+                dob={this.state.pages[0].dob}
+                age={this.state.pages[0].age}
+                isSmoker={this.state.pages[1].isSmoker}
+                height={this.state.pages[2].height}
+                weight={this.state.pages[2].weight}
+                bmi={this.state.pages[2].bmi}
+              />
+            );
           }
         })}
       </div>
