@@ -14,7 +14,17 @@ class DateOfBirth extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const age = this.calculateAge();
-    this.props.onDOBSubmit(this.props.page.key, this.state.response.date, age);
+    if (this.state.response.date === "") {
+      alert("Please select a date");
+    } else if (age < 18) {
+      alert("You are too young to use this service");
+    } else {
+      this.props.onDOBSubmit(
+        this.props.page.key,
+        this.state.response.date,
+        age
+      );
+    }
   };
 
   calculateAge() {
@@ -31,7 +41,7 @@ class DateOfBirth extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1>DOB Question</h1>
+        <h3>What is your date of birth?</h3>
         <form>
           <input type="date" onChange={this.handleChange} />
           <input type="submit" value="Submit" onClick={this.handleSubmit} />

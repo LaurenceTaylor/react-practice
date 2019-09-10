@@ -20,12 +20,20 @@ class Bmi extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.calculateBMI();
-    this.props.onBMISubmit(
-      this.props.page.key,
-      this.state.response.height,
-      this.state.response.weight,
-      this.state.response.bmi
-    );
+    if (this.state.response.height === null) {
+      alert("Please enter a height");
+    } else if (this.state.response.weight === null) {
+      alert("Please enter a weight");
+    } else if (this.state.response.bmi < 18 || this.state.response.bmi > 32) {
+      alert("Your details are not suitable for this service");
+    } else {
+      this.props.onBMISubmit(
+        this.props.page.key,
+        this.state.response.height,
+        this.state.response.weight,
+        this.state.response.bmi
+      );
+    }
   };
 
   calculateBMI() {
@@ -44,12 +52,14 @@ class Bmi extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1>BMI Question</h1>
+        <h3>What is your height and weight</h3>
         <form>
           <h1>Height (cm)</h1>
           <input type="number" onChange={this.handleHeightChange} />
           <h1>Weight (kg)</h1>
           <input type="number" onChange={this.handleWeightChange} />
+          <br />
+          <br />
           <input type="submit" value="Submit" onClick={this.handleSubmit} />
         </form>
       </React.Fragment>

@@ -7,10 +7,14 @@ class Smoker extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onSmokerSubmit(
-      this.props.page.key,
-      this.state.response.isSmoker
-    );
+    if (this.state.response.isSmoker == null) {
+      alert("Please select an option");
+    } else {
+      this.props.onSmokerSubmit(
+        this.props.page.key,
+        this.state.response.isSmoker
+      );
+    }
   };
 
   handleChange = isSmoker => {
@@ -22,7 +26,7 @@ class Smoker extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1>Smoker Question</h1>
+        <h3>Are you a smoker?</h3>
         <form>
           <h1>Yes</h1>
           <input
@@ -36,6 +40,8 @@ class Smoker extends Component {
             name="isSmoker"
             onChange={() => this.handleChange(false)}
           />
+          <br />
+          <br />
           <input type="submit" value="Submit" onClick={this.handleSubmit} />
         </form>
       </React.Fragment>
